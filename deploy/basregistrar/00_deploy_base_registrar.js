@@ -21,7 +21,7 @@ module.exports = async ({getNamedAccounts, deployments, network}) => {
     const base = await ethers.getContract('BaseRegistrarImplementation');
 
     const transactions = []
-    transactions.push(await base.addController(deployer))
+    transactions.push(await base.addController(owner, {from: deployer}))
     transactions.push(await ens.setSubnodeOwner(ZERO_HASH, sha3('avax'), base.address))
 
     console.log(`Waiting on ${transactions.length} transactions setting base registrar`);

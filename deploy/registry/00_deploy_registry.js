@@ -1,7 +1,8 @@
 const { ethers } = require("hardhat");
 
-const ZERO_HASH = '0x0000000000000000000000000000000000000000000000000000000000000000';
+const ZERO_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
+const ethernal = require('hardhat-ethernal');
 module.exports = async ({getNamedAccounts, deployments, network}) => {
     const {deploy} = deployments;
     const {deployer, owner} = await getNamedAccounts();

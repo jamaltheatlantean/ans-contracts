@@ -3,6 +3,7 @@ const namehash = require('eth-ens-namehash');
 const tld = "avax";
 const ethers = hre.ethers;
 const utils = ethers.utils;
+const sha3 = require('web3-utils').sha3;
 const labelhash = (label) => utils.keccak256(utils.toUtf8Bytes(label))
 const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 const ZERO_HASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -13,21 +14,20 @@ async function main() {
   const PublicResolver = await ethers.getContractFactory("PublicResolver")
   const signers = await ethers.getSigners();
   const accounts = signers.map(s => s.address)
- 
-  const ens = await ENSRegistry.deploy()
-  await ens.deployed()
-  console.log("ENS:", ens.address)
-  const resolver = await PublicResolver.deploy(ens.address, ZERO_ADDRESS);
-  await resolver.deployed()
-  console.log("Resolver:", resolver.address)
-  await setupResolver(ens, resolver, accounts)
-  const registrar = await  FIFSRegistrar.deploy(ens.address, namehash.hash(tld));
-  await registrar.deployed()
-  console.log("Registrar:", registrar.address)
-  await setupRegistrar(ens, registrar);
-  const reverseRegistrar = await ReverseRegistrar.deploy(ens.address, resolver.address);
-  await reverseRegistrar.deployed()
-  await setupReverseRegistrar(ens, registrar, reverseRegistrar, accounts);
+
+  const ens = await ethers.getContract('ENSRegistry')
+  const base = await ethers.getContract('BaseRegistrarImplementation');
+  const resolver = await ethers.getContract('PublicResolver')
+
+
+  const transactions = []
+  transactions.push(await base.addController(accounts[0], {from: accounts[0]}))
+  transactions.push(await ens.setSubnodeOwner(ZERO_HASH, sha3('avax'), base.address, {from: accounts[0]}))
+  transactions.push(await ens.setSubnodeOwner(ZERO_HASH, sha3('avax'), accounts[0], {from: accounts[0]}))
+  transactions.push(await ens.setResolver(namehash.hash('avax'), resolver.address, {from: accounts[0]}))
+  transactions.push(await resolver['setAddr(bytes32,address)'](namehash.hash('avax'), resolver.address))
+  console.log(`Waiting on ${transactions.length} transactions setting base registrar`);
+  await Promise.all(transactions.map((tx) => tx.wait()));
 };
 
 async function setupResolver(ens, resolver, accounts) {
