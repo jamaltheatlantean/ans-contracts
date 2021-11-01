@@ -153,7 +153,7 @@ PublicResolver includes the following profiles that implements different EIPs.
 ### How to setup
 
 ```
-git clone https://github.com/ensdomains/ans-contracts
+git clone https://github.com/muellners/ans-contracts
 cd ans-contracts
 yarn
 ```
