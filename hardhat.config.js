@@ -41,12 +41,15 @@ module.exports = {
       saveDeployments: false,
       tags: ["test", "legacy", "use_root"],
     },
-    avash: {
-      url: 'http://localhost:8545',
+    devnet: {
+      url: 'http://localhost:9650/ext/bc/C/rpc',
       gasPrice: 225000000000,
-      chainId: 1337,
+      gas:5e6,
+      blockGasLimit: 8000000,
       accounts: [
         "0x56289e99c94b6912bfc12adc093c9b51124f0dc54ac7a766b2bc5ccf558d8027",
+        "0x7b4198529994b0dc604278c99d153cfd069d594753d471171a1d102a10438e07"
+
       ]
     },
     localhost: {
@@ -74,6 +77,13 @@ module.exports = {
         mnemonic: "stairs glide gaze hold decrease erupt lyrics unveil love crack egg dumb aim use avoid dolphin twist submit energy entire suit know chair despair"
       }
     },
+    avalanche: {
+      url: 'https://api.avax.network/ext/bc/C/rpc',
+      gasPrice: 25000000000,
+      accounts: {
+        mnemonic: ""
+      }
+    }
   },
   mocha: {
   },
