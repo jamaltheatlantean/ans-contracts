@@ -152,10 +152,25 @@ PublicResolver includes the following profiles that implements different EIPs.
 
 ### How to setup
 
+Clone the repository:
 ```
 git clone https://github.com/muellners/ans-contracts
-cd ans-contracts
+```
+
+Go inside the repo and checkout branch `work-branch`:
+```
+cd ans-contracts;
+git checkout work-branch;
+```
+
+Install the dependencies:
+```
 yarn
+```
+
+### Deploy on fuji testnet
+```
+npx hardhat deploy --network fuji
 ```
 
 ### How to run tests
