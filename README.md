@@ -176,7 +176,7 @@ npx hardhat deploy --network fuji
 ### How to run tests
 
 ```
-yarn test
+yarn test --network fuji
 ```
 
 ### How to publish
