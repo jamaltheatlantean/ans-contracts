@@ -16,34 +16,17 @@ module.exports = async ({getNamedAccounts, deployments, network}) => {
     })
 
     const resolver = await ethers.getContract('PublicResolver')
+    const ethregistrar = await ethers.getContract('ETHRegistrarController')
 
     const transactions = []
     transactions.push(await ens.setSubnodeOwner(ZERO_HASH, sha3('avax'), owner))
     transactions.push(await ens.setResolver(namehash.hash('avax'), resolver.address))
     transactions.push(await resolver['setAddr(bytes32,address)'](namehash.hash('avax'), resolver.address))
+    transactions.push(await resolver.setInterface(namehash.hash('avax'), "0x018fac06", ethregistrar.address))
     console.log(`Waiting on settings to take place on resolvers ${transactions.length}`)
-    await Promise.all(transactions.map((tx) => tx.wait()));
-    
-    // const rootOwner = await ens.owner(ZERO_HASH);
-    //     switch(rootOwner) {
-    //     case deployer:
-    //         // const tx = await base.addController(owner, {from: deployer});
-    //         // console.log("Setting Controller on base (tx:${tx.hash})...");
-    //         // await tx.wait();
-    //         break;
-    //     case owner:
-    //         console.log('e')
-    //         const tx = await ens.setSubnodeOwner(ZERO_HASH, sha3('avax'), owner, {from: deployer});
-    //         console.log("Setting Controller on base (tx:${tx.hash})...");
-    //         await tx.wait();
-    //         break;
-    //     default:
-    //         console.log(`WARNING: ENS registry root is owned by ${rootOwner}; cannot transfer to owner`);
-    //     }
-
-    
+    await Promise.all(transactions.map((tx) => tx.wait()));    
 
 }
 
 module.exports.tags = ['public-resolver'];
-module.exports.dependencies = ['registry']
+module.exports.dependencies = ['registry', 'eth-registrar']
