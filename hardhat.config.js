@@ -73,7 +73,6 @@ module.exports = {
       url: 'https://api.avax-test.network/ext/bc/C/rpc',
       gasPrice: 25000000000,
       gas:8000000,
-      chainId: 43113,
       accounts: {
         mnemonic: "stairs glide gaze hold decrease erupt lyrics unveil love crack egg dumb aim use avoid dolphin twist submit energy entire suit know chair despair"
       }
@@ -81,7 +80,7 @@ module.exports = {
     avalanche: {
       url: 'https://api.avax.network/ext/bc/C/rpc',
       gasPrice: 25000000000,
-      gas:5e6,
+      gas:8000000,
       accounts: {
         mnemonic: ""
       }
